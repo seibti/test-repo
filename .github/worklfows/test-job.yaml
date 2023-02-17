@@ -1,0 +1,8 @@
+name: CI-UnitTests
+
+on: push
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    run: |
+      echo "Hello World {{ github.sha }}" 
