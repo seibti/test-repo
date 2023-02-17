@@ -1,0 +1,12 @@
+on:
+  pull_request:
+    types:
+      - closed
+    branches:
+      - 'master'
+jobs:
+  run_auto_deploy:
+    if: contains(github.event.pull_request.title, '[SECURITY]') && github.event.pull_request.merged == true
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "Merged and actions should take place ${{ github.event.pull_request.head.sha }}"
