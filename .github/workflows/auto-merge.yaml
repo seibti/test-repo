@@ -3,7 +3,7 @@ on:
     types:
       - closed
     branches:
-      - 'develop'
+      - 'master'
 jobs:
   run_auto_deploy:
     if: contains(github.event.pull_request.title, '[SECURITY]') && github.event.pull_request.merged == true
