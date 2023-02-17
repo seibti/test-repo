@@ -8,3 +8,4 @@ patch=$((${patch} + 1))
 
 version="${major}.${minor}.${patch}"
 git flow release start "${version}"
+git flow release finish -m "${version}" ${version} -p
