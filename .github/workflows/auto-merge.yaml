@@ -1,14 +1,12 @@
 on:
   pull_request:
-    branches:
-      - develop
-    types: 
+    types:
       - closed
+    branches:
+      - 'develop'
 jobs:
-  security-merge:
-    runs-on: ubuntu-latest
+  run_auto_deploy:
     if: contains(github.event.pull_request.title, '[SECURITY]') && github.event.pull_request.merged == true
+    runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v3
-    - name: Run Merge
-      run: echo "Merged and actions should take place ${{ github.event.pull_request.head.sha }}"
+      - run: echo "Merged and actions should take place ${{ github.event.pull_request.head.sha }}"
