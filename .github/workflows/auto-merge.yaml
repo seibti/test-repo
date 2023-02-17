@@ -8,4 +8,4 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - run: |
-        echo The PR was merged and is a security-patch 
+        echo The PR was merged and is a security-patch
