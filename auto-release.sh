@@ -7,5 +7,4 @@ patch=$(echo $version | cut -d. -f3)
 patch=$((${patch} + 1))
 
 version="${major}.${minor}.${patch}"
-git flow release start "${version}"
-git flow release finish -p -m "${version}" -T "${version}" ${version} 
+git flow release start "${version}" && git flow release finish "${version}" -m -n -F
