@@ -3,10 +3,42 @@ on:
     types:
       - closed
     branches:
-      - 'master'
+      - 'develop'
 jobs:
   run_auto_deploy:
     if: contains(github.event.pull_request.title, '[SECURITY]') && github.event.pull_request.merged == true
     runs-on: ubuntu-latest
     steps:
-      - run: echo "Merged and actions should take place ${{ github.event.pull_request.head.sha }}"
+      - uses: actions/checkout@v3
+        with:
+          persist-credentials: false # otherwise, the token used is the GITHUB_TOKEN, instead of your personal access token.
+          fetch-depth: 0 # otherwise, there would be errors pushing refs to the destination repository.
+      - name: Install dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y --fix-missing git-flow
+      - name: Commit files
+        run: |
+          git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+      - name: Run auto-release
+        run: | 
+          echo "Merged and actions should take place ${{ github.event.pull_request.head.sha }}"
+          chmod +x auto-release.sh
+          ./auto-release.sh
+      - name: checkout develop
+        run: | 
+          git checkout 'develop'
+      - name: Push changes
+        uses: ad-m/github-push-action@master
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          branch: develop
+      - name: checkout master
+        run: | 
+          git checkout 'master'
+      - name: Push changes
+        uses: ad-m/github-push-action@master
+        with:
+          github_token: ${{ secrets.GH_TOKEN }}
+          branch: master
