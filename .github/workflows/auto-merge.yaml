@@ -13,12 +13,28 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get install -y --fix-missing git-flow
+      - name: Commit files
+        run: |
+          git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
       - name: Run auto-release
         run: | 
           echo "Merged and actions should take place ${{ github.event.pull_request.head.sha }}"
           chmod +x auto-release.sh
           ./auto-release.sh
-          git checkout 'develop' && git push origin
-          git checkout 'master' && git push origin
-      - name: Run push to origin
+      - name: checkout develop
         run: | 
+          git checkout 'develop'
+      - name: Push changes
+        uses: ad-m/github-push-action@master
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          branch: develop
+      - name: checkout master
+        run: | 
+          git checkout 'master'
+      - name: Push changes
+        uses: ad-m/github-push-action@master
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          branch: master
