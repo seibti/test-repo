@@ -3,10 +3,22 @@ on:
     types:
       - closed
     branches:
-      - 'master'
+      - 'develop'
 jobs:
   run_auto_deploy:
     if: contains(github.event.pull_request.title, '[SECURITY]') && github.event.pull_request.merged == true
     runs-on: ubuntu-latest
     steps:
-      - run: echo "Merged and actions should take place ${{ github.event.pull_request.head.sha }}"
+      - name: Install dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y --fix-missing git-flow
+      - name: Run auto-release
+        run: | 
+          echo "Merged and actions should take place ${{ github.event.pull_request.head.sha }}"
+          chmod +x auto-release.sh
+          ./auto-release.sh
+          git checkout 'develop' && git push origin
+          git checkout 'master' && git push origin
+      - name: Run push to origin
+        run: | 
