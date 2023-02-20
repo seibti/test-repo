@@ -9,6 +9,10 @@ jobs:
     if: contains(github.event.pull_request.title, '[SECURITY]') && github.event.pull_request.merged == true
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v3
+        with:
+          persist-credentials: false # otherwise, the token used is the GITHUB_TOKEN, instead of your personal access token.
+          fetch-depth: 0 # otherwise, there would be errors pushing refs to the destination repository.
       - name: Install dependencies
         run: |
           sudo apt-get update
