@@ -9,4 +9,4 @@ patch=$((${patch} + 1))
 version="${major}.${minor}.${patch}"
 git checkout 'develop'
 git flow init -d -f
-git flow release start "${version}" && git flow release finish "${version}" -m -n -F # @todo add Tag
+git flow release start "${version}" && git flow release finish "${version}" -m "${version}" -F
